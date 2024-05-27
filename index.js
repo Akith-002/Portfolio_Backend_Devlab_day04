@@ -2,12 +2,14 @@ const express = require("express"); // create an express app
 const app = express();
 const port = 5000;
 
-app.use(express.json());
-
 require("dotenv").config();
 const Project = require("./Project");
 const Blog = require("./Blog");
-// there are two endpoints yet (/ , /project)
+
+const cors = require("cors");
+app.use(cors());
+
+app.use(express.json());
 
 app.get("/", (req, res) => {
   // this is an endpoint
@@ -26,9 +28,6 @@ app.get("/projects", async (req, res) => {
 
 //create an endpoint for creating a project
 app.post("/projects", async (req, res) => {
-  console.log(req.body);
-  res.send("Creating a project");
-
   const project = new Project(req.body);
 
   try {
