@@ -1,6 +1,7 @@
 const mongoose = require("./db");
 
 const projectSchema = new mongoose.Schema({
+  index: Number,
   name: String,
   description: String,
 });
