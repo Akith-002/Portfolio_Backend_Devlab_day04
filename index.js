@@ -3,13 +3,18 @@ const app = express();
 const port = 5000;
 
 require("dotenv").config();
+const cors = require("cors");
+const path = require("path");
+
 const Project = require("./Project");
 const Blog = require("./Blog");
 
-const cors = require("cors");
-app.use(cors());
+const upload = require("./config/multerConfig");
 
+app.use(cors());
 app.use(express.json());
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.get("/", (req, res) => {
   // this is an endpoint
@@ -79,10 +84,16 @@ app.get("/blogs", async (req, res) => {
 });
 
 //create an endpoint for creating a blog
-app.post("/blogs", async (req, res) => {
-  const blog = new Blog(req.body);
+app.post("/blogs", upload.single("image"), async (req, res) => {
+  const blogData = {
+    title: req.body.title,
+    content: req.body.content,
+    date: new Date(),
+    image: req.file ? `/uploads/${req.file.filename}` : null, // Save image path
+  };
 
   try {
+    const blog = new Blog(blogData);
     const newBlog = await blog.save();
     res.status(201).json(newBlog);
   } catch (err) {
