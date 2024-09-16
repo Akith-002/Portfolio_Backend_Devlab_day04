@@ -2,6 +2,8 @@ const express = require("express"); // create an express app
 const app = express();
 const port = 5000;
 
+const imageRoutes = require("./routes/imageRoutes");
+
 require("dotenv").config();
 const cors = require("cors");
 const path = require("path");
@@ -13,6 +15,10 @@ const upload = require("./config/multerConfig");
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// use the routes defined in imageRoutes.js
+app.use("/images", imageRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -102,11 +108,16 @@ app.post("/blogs", upload.single("image"), async (req, res) => {
 });
 
 //create an endpoint to update a blog by id
-app.patch("/blogs/:id", async (req, res) => {
+app.patch("/blogs/:id", upload.single("image"), async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
     if (blog) {
-      blog.set(req.body);
+      blog.set({
+        title: req.body.title,
+        content: req.body.content,
+        image: req.file ? `/uploads/${req.file.filename}` : blog.image,
+      });
+
       const updatedBlog = await blog.save();
       res.json(updatedBlog);
     } else {
