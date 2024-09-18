@@ -1,12 +1,16 @@
 const express = require("express"); // create an express app
 const app = express();
 const port = 5000;
-
-const imageRoutes = require("./routes/imageRoutes");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 require("dotenv").config();
 const cors = require("cors");
 const path = require("path");
+
+const imageRoutes = require("./routes/imageRoutes");
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
 const Project = require("./Project");
 const Blog = require("./Blog");
@@ -21,6 +25,34 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/images", imageRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// route for chatbot interactions
+app.post("/chat", async (req, res) => {
+  const { message } = req.body;
+
+  const prompt = `You are a helpful and informative AI chatbot designed to answer questions about B. A. Akith Chandinu, an undergraduate from the University of Moratuwa, Faculty of IT. 
+Here is a summary of who I am:
+- I am skilled in data analysis, Python (programming language), statistics, data visualization, data structures, web scraping, computer programming, teamwork, IoT (Internet of Things), problem solving, user interface (UI) design, user experience (UX), C#, C (programming language), React.js, Tailwind CSS, JavaScript, CSS, and HTML.
+- My key achievements include securing third place in DataStorm 5.0, reaching the semifinals of Idealize 24, and being selected for the third round of Tech Triathlon 24.
+- Some of the projects I've worked on are DebateX (a revolutionary debate platform), the Interactive Rhyme Jacket (Rhyme Fit) as a first-year project, Cookpal, VisitSriLanka (your travel guide), and my portfolio.
+- I am pursuing a Bachelor of Science Honours in Information Technology, currently in my second year.
+- I hold certifications in 'Understanding and Visualizing Data with Python,' 'Using Python to Access Web Data,' 'Python (Basic) Certificate,' 'Programming for Everybody,' and 'Python Data Structures.'
+- I am particularly interested in the fields of machine learning (ML) and artificial intelligence (AI).
+
+Answer the following question: ${message}`;
+
+  try {
+    const result = await model.generateContent(prompt);
+    console.log(result.response.text());
+
+    res.json(result.response.text());
+
+    console.log("Response generated successfully.");
+  } catch (error) {
+    console.error("Error generating response:", error);
+    res.status(500).send("Error processing request.");
+  }
+});
 
 app.get("/", (req, res) => {
   // this is an endpoint
