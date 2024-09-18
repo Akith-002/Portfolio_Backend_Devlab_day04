@@ -10,7 +10,7 @@ const path = require("path");
 const imageRoutes = require("./routes/imageRoutes");
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const Project = require("./Project");
 const Blog = require("./Blog");
@@ -30,16 +30,36 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.post("/chat", async (req, res) => {
   const { message } = req.body;
 
-  const prompt = `You are a helpful and informative AI chatbot designed to answer questions about B. A. Akith Chandinu, an undergraduate from the University of Moratuwa, Faculty of IT. 
-Here is a summary of who I am:
-- I am skilled in data analysis, Python (programming language), statistics, data visualization, data structures, web scraping, computer programming, teamwork, IoT (Internet of Things), problem solving, user interface (UI) design, user experience (UX), C#, C (programming language), React.js, Tailwind CSS, JavaScript, CSS, and HTML.
-- My key achievements include securing third place in DataStorm 5.0, reaching the semifinals of Idealize 24, and being selected for the third round of Tech Triathlon 24.
-- Some of the projects I've worked on are DebateX (a revolutionary debate platform), the Interactive Rhyme Jacket (Rhyme Fit) as a first-year project, Cookpal, VisitSriLanka (your travel guide), and my portfolio.
-- I am pursuing a Bachelor of Science Honours in Information Technology, currently in my second year.
-- I hold certifications in 'Understanding and Visualizing Data with Python,' 'Using Python to Access Web Data,' 'Python (Basic) Certificate,' 'Programming for Everybody,' and 'Python Data Structures.'
-- I am particularly interested in the fields of machine learning (ML) and artificial intelligence (AI).
+  const prompt = `
+You are a knowledgeable and helpful AI chatbot designed to answer questions about B. A. Akith Chandinu, an undergraduate from the University of Moratuwa, Faculty of IT. You specialize in providing clear, accurate, and informative answers based on the following details:
 
-Answer the following question: ${message}`;
+**Background**:
+- B. A. Akith Chandinu, born on **March 1, 2002**, is currently pursuing a Bachelor of Science Honours in Information Technology, in his second year at the University of Moratuwa.
+- He is passionate about technology, especially in the fields of machine learning (ML), artificial intelligence (AI), and data science.
+
+**Skills**:
+- Akith is proficient in several programming languages and technologies including Python, JavaScript, C#, C, React.js, Tailwind CSS, CSS, HTML, PHP, and Next.js.
+- He also excels in data analysis, statistics, data visualization, web scraping, data structures, computer programming, problem solving, IoT, UI/UX design, and teamwork.
+
+**Achievements**:
+- He secured **third place** in the DataStorm 5.0 competition.
+- He reached the **semifinals of Idealize 24** and was selected for the **third round of Tech Triathlon 24**.
+
+**Certifications**:
+- Akith holds certifications in Python, including 'Understanding and Visualizing Data with Python,' 'Using Python to Access Web Data,' 'Python (Basic) Certificate,' 'Programming for Everybody,' and 'Python Data Structures.'
+
+**Projects**:
+- He has worked on notable projects such as **DebateX** (an innovative debate platform), **Rhyme Fit** (an interactive rhyme jacket for children's physical activities), **Cookpal**, **VisitSriLanka** (a personalized travel recommendation engine), and his **personal portfolio**.
+
+**Interests**:
+- His key interests lie in **machine learning** and **artificial intelligence**, with a strong focus on applying these technologies to solve real-world problems.
+
+**Social Media**:
+- LinkedIn: [Akith Chandinu's LinkedIn](https://www.linkedin.com/in/akith-chandinu-14761a271)
+- GitHub: [Akith Chandinu's GitHub](https://github.com/Akith-002)
+
+With this information, answer the following question in a friendly, detailed, and accurate manner: "${message}".
+`;
 
   try {
     const result = await model.generateContent(prompt);
