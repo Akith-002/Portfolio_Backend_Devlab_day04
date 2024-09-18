@@ -16,6 +16,7 @@ const Project = require("./Project");
 const Blog = require("./Blog");
 
 const upload = require("./config/multerConfig");
+const { url } = require("inspector");
 
 app.use(cors());
 app.use(express.json());
@@ -147,6 +148,7 @@ app.post("/blogs", upload.single("image"), async (req, res) => {
     title: req.body.title,
     content: req.body.content,
     date: new Date(),
+    url: req.body.url,
     image: req.file ? `/uploads/${req.file.filename}` : null, // Save image path
   };
 
@@ -167,6 +169,7 @@ app.patch("/blogs/:id", upload.single("image"), async (req, res) => {
       blog.set({
         title: req.body.title,
         content: req.body.content,
+        url: req.body.url,
         image: req.file ? `/uploads/${req.file.filename}` : blog.image,
       });
 

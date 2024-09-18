@@ -4,6 +4,7 @@ const blogSchema = new mongoose.Schema({
   title: String,
   content: String,
   date: Date,
+  url: String,
   image: String,
 });
 
