@@ -197,6 +197,17 @@ app.delete("/blogs/:id", async (req, res) => {
   }
 });
 
+// create an endpoint for the user validation
+app.post("/signin", (req, res) => {
+  const { username, password } = req.body;
+
+  if (username === "akith" && password === "akith@123") {
+    res.json({ message: "Valid user" });
+  } else {
+    res.status(401).json({ message: "Invalid user" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
 });
