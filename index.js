@@ -14,9 +14,11 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 const Project = require("./Project");
 const Blog = require("./Blog");
+const Competition = require("./Competition");
 
 const upload = require("./config/multerConfig");
 const { url } = require("inspector");
+const { appendFileSync } = require("fs");
 
 app.use(cors());
 app.use(express.json());
@@ -77,7 +79,7 @@ With this information, answer the following question in a friendly, detailed, an
 
 app.get("/", (req, res) => {
   // this is an endpoint
-  res.send("Hello, World!");
+  res.send("The Backend Server is running!");
 });
 
 app.get("/projects", async (req, res) => {
@@ -205,6 +207,73 @@ app.post("/signin", (req, res) => {
     res.json({ message: "Valid user" });
   } else {
     res.status(401).json({ message: "Invalid user" });
+  }
+});
+
+// endpoint for competitions
+app.get("/competitions", async (req, res) => {
+  try {
+    const competitions = await Competition.find();
+    res.json(competitions);
+    console.log(competitions);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// CREATE competition
+app.post("/competitions", upload.single("image"), async (req, res) => {
+  const competitionData = {
+    title: req.body.title,
+    description: req.body.description,
+    date: new Date(),
+    url: req.body.url,
+    image: req.file ? `/uploads/${req.file.filename}` : null, // Save image path
+  };
+
+  try {
+    const competition = new Competition(competitionData);
+    const newCompetition = await competition.save();
+    console.log(newCompetition);
+    res.status(201).json(newCompetition);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
+// UPDATE competition by id
+app.patch("/competitions/:id", upload.single("image"), async (req, res) => {
+  try {
+    const competition = await Competition.findById(req.params.id);
+    if (competition) {
+      competition.set({
+        title: req.body.title,
+        description: req.body.description,
+        url: req.body.url,
+        image: req.file ? `/uploads/${req.file.filename}` : competition.image, // Update image if provided
+      });
+
+      const updatedCompetition = await competition.save();
+      res.json(updatedCompetition);
+    } else {
+      res.status(404).json({ message: "Competition not found" });
+    }
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+});
+
+// DELETE competition by id
+app.delete("/competitions/:id", async (req, res) => {
+  try {
+    const competition = await Competition.findByIdAndDelete(req.params.id);
+    if (competition) {
+      res.json({ message: "Competition deleted" });
+    } else {
+      res.status(404).json({ message: "Competition not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
