@@ -35,7 +35,7 @@ Ensure you have the following installed:
 1. Clone this repository:
 
     ```bash
-    git clone https://github.com/Akith-002/portfolio_backend.git
+    git clone https://github.com/Akith-002/Portfolio_Backend_Devlab_day04.git
     cd portfolio_backend
     ```
 
