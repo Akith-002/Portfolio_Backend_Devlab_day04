@@ -220,7 +220,6 @@ app.get("/competitions", async (req, res) => {
   try {
     const competitions = await Competition.find();
     res.json(competitions);
-    console.log(competitions);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
