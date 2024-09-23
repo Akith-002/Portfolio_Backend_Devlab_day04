@@ -1,7 +1,9 @@
+const compression = require("compression");
 const express = require("express"); // create an express app
 const app = express();
 const port = 5000;
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+app.use(compression());
 
 require("dotenv").config();
 const cors = require("cors");
@@ -203,7 +205,10 @@ app.delete("/blogs/:id", async (req, res) => {
 app.post("/signin", (req, res) => {
   const { username, password } = req.body;
 
-  if (username === "akith" && password === "akith@123") {
+  if (
+    username === process.env.Admin_user &&
+    password === process.env.Admin_pass
+  ) {
     res.json({ message: "Valid user" });
   } else {
     res.status(401).json({ message: "Invalid user" });
