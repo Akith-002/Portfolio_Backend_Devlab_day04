@@ -68,7 +68,6 @@ With this information, answer the following question in a friendly, detailed, an
 
   try {
     const result = await model.generateContent(prompt);
-    console.log(result.response.text());
 
     res.json(result.response.text());
 
@@ -238,7 +237,6 @@ app.post("/competitions", upload.single("image"), async (req, res) => {
   try {
     const competition = new Competition(competitionData);
     const newCompetition = await competition.save();
-    console.log(newCompetition);
     res.status(201).json(newCompetition);
   } catch (err) {
     res.status(400).json({ message: err.message });
