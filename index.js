@@ -68,7 +68,7 @@ You are a knowledgeable and helpful AI chatbot designed to answer questions abou
 - GitHub: [Akith Chandinu's GitHub](https://github.com/Akith-002)
 - YouTube: [Akith Chandinu's YouTube](https://www.youtube.com/@akithchandinu6602)
 
-With this information, answer the following question in a friendly, detailed, and accurate manner. Unless the user asks a question that requires a longer answer, keep the response within 400 characters: "${message}".
+With this information, answer the following question in a friendly, detailed, and accurate manner: "${message}".
 `;
 
   try {
