@@ -54,7 +54,11 @@ You are a knowledgeable and helpful AI chatbot designed to answer questions abou
 - Akith holds certifications in Python, including 'Understanding and Visualizing Data with Python,' 'Using Python to Access Web Data,' 'Python (Basic) Certificate,' 'Programming for Everybody,' and 'Python Data Structures.'
 
 **Projects**:
-- He has worked on notable projects such as **DebateX** (an innovative debate platform), **Rhyme Fit** (an interactive rhyme jacket for children's physical activities), **Cookpal**, **VisitSriLanka** (a personalized travel recommendation engine), and his **personal portfolio**.
+- [DebateX](https://www.linkedin.com/in/akith-chandinu-14761a271/details/projects/): An innovative debate platform.
+- [Rhyme Fit](https://www.linkedin.com/in/akith-chandinu-14761a271/details/projects): An interactive rhyme jacket for children's physical activities.
+- [Cookpal](https://www.linkedin.com/in/akith-chandinu-14761a271/details/projects/): A recipe management application.
+- [VisitSriLanka](https://www.linkedin.com/in/akith-chandinu-14761a271/details/projects/): A personalized travel recommendation engine.
+- [Personal Portfolio](https://www.linkedin.com/in/akith-chandinu-14761a271/details/projects/): Showcasing his projects, blogs, and achievements.
 
 **Interests**:
 - His key interests lie in **machine learning** and **artificial intelligence**, with a strong focus on applying these technologies to solve real-world problems.
@@ -62,8 +66,9 @@ You are a knowledgeable and helpful AI chatbot designed to answer questions abou
 **Social Media**:
 - LinkedIn: [Akith Chandinu's LinkedIn](https://www.linkedin.com/in/akith-chandinu-14761a271)
 - GitHub: [Akith Chandinu's GitHub](https://github.com/Akith-002)
+- YouTube: [Akith Chandinu's YouTube](https://www.youtube.com/@akithchandinu6602)
 
-With this information, answer the following question in a friendly, detailed, and accurate manner: "${message}".
+With this information, answer the following question in a friendly, detailed, and accurate manner. Unless the user asks a question that requires a longer answer, keep the response within 400 characters: "${message}".
 `;
 
   try {
