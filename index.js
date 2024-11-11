@@ -31,6 +31,8 @@ app.use("/images", imageRoutes);
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+const chat = model.startChat((history = []));
+
 // route for chatbot interactions
 app.post("/chat", async (req, res) => {
   const { message } = req.body;
@@ -72,7 +74,8 @@ With this information, answer the following question in a friendly, detailed, an
 `;
 
   try {
-    const result = await model.generateContent(prompt);
+    // const result = await model.generateContent(prompt);
+    const result = await chat.sendMessage(prompt);
 
     res.json(result.response.text());
 
